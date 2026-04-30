@@ -1,12 +1,5 @@
 @import "tailwindcss";
 
-@theme {
-  --animate-marquee: marquee 25s linear infinite;
-
-  --keyframes-marquee-0: translateX(0%);
-  --keyframes-marquee-100: translateX(-33.333%);
-}
-
 @keyframes marquee {
   0% { transform: translateX(0%); }
   100% { transform: translateX(-33.333%); }
@@ -22,12 +15,15 @@ html {
   scroll-behavior: smooth;
   background-color: #000000;
   color: #ffffff;
+  /* Smooth scroll with offset for fixed navbar */
+  scroll-padding-top: 80px;
 }
 
 body {
   background-color: #000000;
   color: #ffffff;
   font-family: system-ui, -apple-system, sans-serif;
+  overflow-x: hidden;
 }
 
 ::selection {
@@ -44,6 +40,10 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #333;
+  background: #27272a;
   border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #52525b;
 }
