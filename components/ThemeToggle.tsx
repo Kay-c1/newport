@@ -1,18 +1,19 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { Moon, Sun } from "lucide-react"
 
 type Theme = "light" | "dark"
 
 export default function ThemeToggle() {
   const [theme, setTheme] = useState<Theme>("light")
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
     const saved = window.localStorage.getItem("portfolio-theme") as Theme | null
     const initial = saved === "dark" || saved === "light" ? saved : "light"
     setTheme(initial)
     document.documentElement.dataset.theme = initial
+    setMounted(true)
   }, [])
 
   const toggleTheme = () => {
@@ -22,17 +23,20 @@ export default function ThemeToggle() {
     window.localStorage.setItem("portfolio-theme", next)
   }
 
+  const label = !mounted ? "LIGHT" : theme.toUpperCase()
+  const nextLabel = theme === "light" ? "DARK MODE" : "LIGHT MODE"
+
   return (
     <button
       type="button"
       onClick={toggleTheme}
-      aria-label={theme === "light" ? "Switch to dark mode" : "Switch to light mode"}
-      title={theme === "light" ? "Dark mode" : "Light mode"}
+      aria-label={nextLabel}
+      title={nextLabel}
       className="theme-toggle"
     >
-      <Sun size={14} className="theme-sun" />
-      <span className="theme-toggle-divider" />
-      <Moon size={14} className="theme-moon" />
+      <span className="theme-toggle-dot" />
+      <span>{label}</span>
+      <span className="theme-toggle-arrow">↔</span>
     </button>
   )
 }
