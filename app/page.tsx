@@ -6,11 +6,15 @@ import Skills from "@/components/Skills"
 import About from "@/components/About"
 import Footer from "@/components/Footer"
 import IntroWrapper from "@/components/IntroWrapper"
+import ScrollProgress from "@/components/ScrollProgress"
+import HeroScrollFX from "@/components/HeroScrollFX"
 
 export default function Home() {
   return (
     <IntroWrapper>
-      <main className="min-h-screen bg-black overflow-x-hidden">
+      <main className="site-main relative min-h-screen overflow-x-hidden">
+        <ScrollProgress />
+        <HeroScrollFX />
         <Navbar />
         <Hero />
         <Marquee />
