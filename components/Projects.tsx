@@ -1,309 +1,179 @@
 "use client"
 
-import ScrollReveal from "./ScrollReveal"
-import RevealLine from "./RevealLine"
+import { useLayoutEffect, useRef } from "react"
+import gsap from "gsap"
+import { ScrollTrigger } from "gsap/ScrollTrigger"
+
+gsap.registerPlugin(ScrollTrigger)
 
 const projects = [
   {
-    id: "01",
+    number: "01",
     title: "SelfOrder System",
     category: "Backend Lead · Internship",
-    year: "2025–2026",
+    period: "2025–2026",
     company: "System Sense Corp.",
     description:
-      "Led backend development delivering 8+ APIs including Order Creation, User Management, Device Management, Multilingual Menu, and Sales Analytics. Built transaction processing logic and daily/monthly sales aggregation batch processes. Reduced API response times by 20ms.",
-    tags: ["Node.js", "NestJS", "TypeORM", "MySQL", "REST APIs", "Docker"],
-    github: "#",
-    live: "#",
-    featured: true,
+      "Led backend development for an ordering platform, delivering 8+ APIs, transaction processing, device management, multilingual menus, sales analytics, and batch aggregation.",
+    tags: ["Node.js", "NestJS", "TypeORM", "MySQL", "Docker"],
   },
   {
-    id: "02",
+    number: "02",
     title: "Minimalist AI Plant Monitoring",
-    category: "Thesis · Leaf Tech",
-    year: "2025–2026",
+    category: "Thesis · AI / Computer Vision",
+    period: "2025–2026",
     company: "Holy Angel University",
     description:
-      "End-to-end AI-powered plant monitoring system for strawberry farming in tropical environments. Integrated AI models for plant health monitoring and disease detection with ~97% accuracy. Built with computer vision for early disease detection and growth monitoring.",
-    tags: ["Next.js", "FastAPI", "Python", "TensorFlow", "Computer Vision", "Firebase"],
-    github: "#",
-    live: "#",
-    featured: true,
+      "Built an end-to-end plant monitoring system combining computer vision, AI-assisted disease detection, growth monitoring, FastAPI services, Firebase data, and a Next.js interface.",
+    tags: ["Python", "FastAPI", "TensorFlow", "Computer Vision", "Firebase"],
   },
   {
-    id: "03",
-    title: "A.I Sleep Apnea Detector",
+    number: "03",
+    title: "AI Sleep Apnea Detector",
     category: "Full Stack · Freelance",
-    year: "2026",
+    period: "2026",
     company: "Sleep Well",
     description:
-      "Full-stack web application for sleep apnea detection. Handled the project from UI/UX design to full implementation. Built frontend with Next.js and AI-powered backend using FastAPI, integrating machine learning models for sleep analysis with real-time Firebase data handling.",
-    tags: ["Next.js", "FastAPI", "Python", "Firebase", "Machine Learning"],
-    github: "#",
-    live: "#",
-    featured: false,
+      "Designed and implemented a full-stack application for AI-assisted sleep analysis, connecting a Next.js interface to FastAPI services and real-time Firebase data.",
+    tags: ["Next.js", "FastAPI", "Python", "Firebase", "ML"],
   },
   {
-    id: "04",
-    title: "Fate Architect Portfolio",
+    number: "04",
+    title: "Fate Architect",
     category: "Frontend · Freelance",
-    year: "2026",
+    period: "2026",
     company: "Self",
     description:
-      "Custom fully responsive landing page built with Next.js. Implemented advanced animations using GSAP for smooth, interactive user experiences. Built from scratch without templates, ensuring unique design and optimized frontend architecture.",
-    tags: ["Next.js", "GSAP", "TypeScript", "Tailwind CSS"],
-    github: "#",
-    live: "https://kristian-chi.vercel.app",
-    featured: false,
-  },
-  {
-    id: "05",
-    title: "Soda ERP System",
-    category: "Backend · Freelance",
-    year: "2022",
-    company: "Self",
-    description:
-      "Full ERP backend system using Django with role-based architecture supporting three user types: Admin, Accountant, and Customer. Designed and implemented complete business logic and database architecture.",
-    tags: ["Django", "Python", "SQL", "REST APIs", "Role-Based Auth"],
-    github: "#",
-    live: "#",
-    featured: false,
+      "A custom responsive experience built from scratch with Next.js and GSAP, focused on art direction, motion, and a polished interactive presentation.",
+    tags: ["Next.js", "GSAP", "TypeScript", "Tailwind"],
   },
 ]
 
 export default function Projects() {
+  const sectionRef = useRef<HTMLElement>(null)
+  const trackRef = useRef<HTMLDivElement>(null)
+
+  useLayoutEffect(() => {
+    const section = sectionRef.current
+    const track = trackRef.current
+    if (!section || !track) return
+
+    const ctx = gsap.context(() => {
+      const cards = gsap.utils.toArray<HTMLElement>(".project-card")
+      if (cards.length < 2) return
+
+      const getDistance = () =>
+        Math.max(0, track.scrollWidth - window.innerWidth + 48)
+
+      gsap.to(track, {
+        x: () => -getDistance(),
+        ease: "none",
+        scrollTrigger: {
+          trigger: section,
+          start: "top top",
+          end: () => "+=" + getDistance() * 1.35,
+          pin: true,
+          scrub: 1.05,
+          invalidateOnRefresh: true,
+          anticipatePin: 1,
+        },
+      })
+
+      cards.forEach((card, index) => {
+        gsap.fromTo(
+          card,
+          { opacity: index === 0 ? 1 : 0.35, scale: index === 0 ? 1 : 0.94 },
+          {
+            opacity: 1,
+            scale: 1,
+            ease: "none",
+            scrollTrigger: {
+              trigger: card,
+              containerAnimation: undefined,
+              start: "left 80%",
+              end: "left 35%",
+              scrub: true,
+            },
+          },
+        )
+      })
+    }, section)
+
+    return () => ctx.revert()
+  }, [])
+
   return (
-    <section id="projects" style={{ padding: "96px 0" }}>
-      <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 24px" }}>
+    <section
+      ref={sectionRef}
+      id="projects"
+      className="relative min-h-screen overflow-hidden bg-[#050505]"
+    >
+      <div className="absolute inset-0 story-grid opacity-60" />
 
-        {/* Header */}
-        <ScrollReveal direction="up" delay={0}>
-          <div
-            style={{
-              display: "flex",
-              alignItems: "flex-end",
-              justifyContent: "space-between",
-              marginBottom: "32px",
-              flexWrap: "wrap",
-              gap: "16px",
-            }}
-          >
-            <div>
-              <span
-                style={{
-                  color: "#52525b",
-                  fontSize: "11px",
-                  textTransform: "uppercase",
-                  letterSpacing: "0.15em",
-                }}
-              >
-                Selected Work
-              </span>
-              <h2
-                style={{
-                  fontSize: "clamp(36px, 6vw, 72px)",
-                  fontWeight: 900,
-                  color: "white",
-                  marginTop: "8px",
-                  letterSpacing: "-2px",
-                  lineHeight: 1,
-                }}
-              >
-                Projects
-              </h2>
-            </div>
-            <span style={{ color: "#52525b", fontSize: "13px" }}>
-              {projects.length} projects
-            </span>
+      <div className="relative z-10 flex h-screen flex-col justify-between px-6 py-20 md:px-10 lg:px-16">
+        <div className="flex items-end justify-between gap-8">
+          <div>
+            <p className="mb-3 text-[10px] uppercase tracking-[0.28em] text-zinc-600">
+              02 / Selected work
+            </p>
+            <h2 className="text-[clamp(3rem,8vw,8rem)] font-black uppercase leading-[0.82] tracking-[-0.06em]">
+              Built.
+            </h2>
           </div>
-        </ScrollReveal>
+          <p className="hidden max-w-xs text-right text-xs leading-6 text-zinc-600 md:block">
+            Scroll through the work. Each project is a chapter in how I build
+            systems.
+          </p>
+        </div>
 
-        {/* Animated Divider Line */}
-        <RevealLine delay={0.2} direction="left" />
-
-        <div style={{ marginTop: "64px" }}>
+        <div ref={trackRef} className="flex w-max items-center gap-6 py-10 md:gap-10">
           {projects.map((project, index) => (
-            <div key={project.id}>
-              <ScrollReveal
-                direction="up"
-                delay={0.1}
-                distance={30}
-              >
-                <div
-                  style={{
-                    padding: "40px 0",
-                    cursor: "pointer",
-                  }}
-                >
-                  <div
-                    style={{ display: "flex", gap: "24px", flexWrap: "wrap" }}
+            <article
+              key={project.number}
+              className="project-card group relative flex h-[54vh] w-[82vw] max-w-[1000px] shrink-0 flex-col justify-between overflow-hidden rounded-[2rem] border border-white/10 bg-zinc-950 p-6 md:p-10 lg:p-12"
+            >
+              <div className="absolute -right-20 -top-20 h-72 w-72 rounded-full bg-white/[0.035] blur-3xl transition-transform duration-700 group-hover:scale-150" />
+
+              <div className="relative flex items-start justify-between">
+                <span className="font-mono text-xs text-zinc-600">
+                  {project.number}
+                </span>
+                <span className="text-right text-[10px] uppercase tracking-[0.2em] text-zinc-600">
+                  {project.period}
+                  <br />
+                  {project.company}
+                </span>
+              </div>
+
+              <div className="relative max-w-4xl">
+                <p className="mb-4 text-[10px] uppercase tracking-[0.22em] text-zinc-600">
+                  {project.category}
+                </p>
+                <h3 className="max-w-4xl text-[clamp(2.3rem,6vw,6.5rem)] font-black uppercase leading-[0.84] tracking-[-0.055em]">
+                  {project.title}
+                </h3>
+                <p className="mt-7 max-w-2xl text-sm leading-7 text-zinc-500 md:text-base">
+                  {project.description}
+                </p>
+              </div>
+
+              <div className="relative flex flex-wrap gap-2">
+                {project.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="rounded-full border border-white/10 px-3 py-1.5 text-[10px] uppercase tracking-[0.12em] text-zinc-500"
                   >
-                    {/* Number */}
-                    <span
-                      style={{
-                        color: "#3f3f46",
-                        fontSize: "12px",
-                        fontFamily: "monospace",
-                        paddingTop: "6px",
-                        minWidth: "28px",
-                      }}
-                    >
-                      {project.id}
-                    </span>
-
-                    {/* Content */}
-                    <div style={{ flex: 1, minWidth: "280px" }}>
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "12px",
-                          marginBottom: "6px",
-                          flexWrap: "wrap",
-                        }}
-                      >
-                        <h3
-                          style={{
-                            color: "white",
-                            fontSize: "clamp(18px, 3vw, 24px)",
-                            fontWeight: 700,
-                            margin: 0,
-                          }}
-                        >
-                          {project.title}
-                        </h3>
-                        {project.featured && (
-                          <span
-                            style={{
-                              backgroundColor: "white",
-                              color: "black",
-                              fontSize: "10px",
-                              fontWeight: 600,
-                              padding: "2px 10px",
-                              borderRadius: "999px",
-                            }}
-                          >
-                            Featured
-                          </span>
-                        )}
-                      </div>
-
-                      <div
-                        style={{
-                          display: "flex",
-                          gap: "12px",
-                          color: "#52525b",
-                          fontSize: "12px",
-                          marginBottom: "16px",
-                          flexWrap: "wrap",
-                        }}
-                      >
-                        <span>{project.category}</span>
-                        <span>·</span>
-                        <span>{project.company}</span>
-                        <span>·</span>
-                        <span>{project.year}</span>
-                      </div>
-
-                      <p
-                        style={{
-                          color: "#71717a",
-                          fontSize: "14px",
-                          lineHeight: 1.8,
-                          marginBottom: "20px",
-                          maxWidth: "640px",
-                        }}
-                      >
-                        {project.description}
-                      </p>
-
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "space-between",
-                          flexWrap: "wrap",
-                          gap: "16px",
-                        }}
-                      >
-                        <div
-                          style={{
-                            display: "flex",
-                            flexWrap: "wrap",
-                            gap: "8px",
-                          }}
-                        >
-                          {project.tags.map((tag) => (
-                            <span
-                              key={tag}
-                              style={{
-                                color: "#71717a",
-                                fontSize: "11px",
-                                border: "1px solid #27272a",
-                                padding: "4px 12px",
-                                borderRadius: "999px",
-                              }}
-                            >
-                              {tag}
-                            </span>
-                          ))}
-                        </div>
-                        <div style={{ display: "flex", gap: "20px" }}>
-                          <a
-                            href={project.github}
-                            style={{
-                              color: "#52525b",
-                              fontSize: "12px",
-                              textDecoration: "none",
-                              textTransform: "uppercase",
-                              letterSpacing: "0.05em",
-                              transition: "color 0.2s",
-                            }}
-                            onMouseEnter={(e) =>
-                              (e.currentTarget.style.color = "white")
-                            }
-                            onMouseLeave={(e) =>
-                              (e.currentTarget.style.color = "#52525b")
-                            }
-                          >
-                            GitHub ↗
-                          </a>
-                          <a
-                            href={project.live}
-                            style={{
-                              color: "#52525b",
-                              fontSize: "12px",
-                              textDecoration: "none",
-                              textTransform: "uppercase",
-                              letterSpacing: "0.05em",
-                              transition: "color 0.2s",
-                            }}
-                            onMouseEnter={(e) =>
-                              (e.currentTarget.style.color = "white")
-                            }
-                            onMouseLeave={(e) =>
-                              (e.currentTarget.style.color = "#52525b")
-                            }
-                          >
-                            Live ↗
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </ScrollReveal>
-
-              {/* Animated line between projects */}
-              {index < projects.length - 1 && (
-                <RevealLine
-                  delay={0}
-                  direction="left"
-                  color="#18181b"
-                />
-              )}
-            </div>
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </article>
           ))}
+        </div>
+
+        <div className="flex items-center justify-between border-t border-white/10 pt-4 text-[10px] uppercase tracking-[0.2em] text-zinc-600">
+          <span>Scroll →</span>
+          <span>04 projects</span>
         </div>
       </div>
     </section>
