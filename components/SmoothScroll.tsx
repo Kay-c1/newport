@@ -2,50 +2,64 @@
 
 import { useEffect } from "react"
 import Lenis from "lenis"
+import gsap from "gsap"
+import { ScrollTrigger } from "gsap/ScrollTrigger"
+
+gsap.registerPlugin(ScrollTrigger)
 
 export default function SmoothScroll() {
   useEffect(() => {
     const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      duration: 1.15,
+      easing: (t) => 1 - Math.pow(2, -10 * t),
       orientation: "vertical",
       smoothWheel: true,
-      wheelMultiplier: 1,
-      touchMultiplier: 2,
+      syncTouch: true,
+      touchMultiplier: 1.25,
     })
 
-    function raf(time: number) {
-      lenis.raf(time)
-      requestAnimationFrame(raf)
+    const updateScrollTrigger = () => {
+      ScrollTrigger.update()
     }
 
-    requestAnimationFrame(raf)
+    lenis.on("scroll", updateScrollTrigger)
 
-    // Fix anchor links to use Lenis smooth scroll
-    const handleAnchorClick = (e: MouseEvent) => {
-      const target = e.target as HTMLElement
+    const ticker = (time: number) => {
+      lenis.raf(time * 1000)
+    }
+
+    gsap.ticker.add(ticker)
+    gsap.ticker.lagSmoothing(0)
+
+    const handleAnchorClick = (event: MouseEvent) => {
+      const target = event.target as HTMLElement
       const anchor = target.closest("a")
       if (!anchor) return
 
       const href = anchor.getAttribute("href")
       if (!href || !href.startsWith("#")) return
 
-      e.preventDefault()
       const element = document.querySelector(href)
-      if (element) {
-        lenis.scrollTo(element as HTMLElement, {
-          offset: -80,
-          duration: 1.5,
-          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-        })
-      }
+      if (!element) return
+
+      event.preventDefault()
+
+      lenis.scrollTo(element as HTMLElement, {
+        offset: -64,
+        duration: 1.35,
+        easing: (t) => 1 - Math.pow(2, -10 * t),
+      })
     }
 
     document.addEventListener("click", handleAnchorClick)
+    ScrollTrigger.refresh()
 
     return () => {
-      lenis.destroy()
       document.removeEventListener("click", handleAnchorClick)
+      lenis.off("scroll", updateScrollTrigger)
+      gsap.ticker.remove(ticker)
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
+      lenis.destroy()
     }
   }, [])
 
