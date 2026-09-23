@@ -81,15 +81,15 @@ a, button { -webkit-tap-highlight-color: transparent; }
 .ambient-blob-c { width:18rem;height:18rem;left:36%;bottom:-6rem;background:var(--gold-soft); }
 
 .theme-toggle {
-  display:inline-flex;align-items:center;justify-content:center;gap:9px;width:74px;height:34px;
-  border:1px solid var(--border);border-radius:999px;background:color-mix(in srgb,var(--card) 78%,transparent);
-  color:var(--muted);box-shadow:0 8px 24px color-mix(in srgb,var(--text) 4%,transparent);
-  backdrop-filter:blur(14px);cursor:pointer;transition:transform .25s,border-color .25s,color .25s;
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;min-width:96px;height:34px;padding:0 13px;
+  border:1px solid var(--border-strong);border-radius:999px;background:var(--card);color:var(--text);
+  box-shadow:0 8px 28px color-mix(in srgb,var(--text) 6%,transparent);backdrop-filter:blur(16px);cursor:pointer;
+  font:600 10px/1 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;letter-spacing:.16em;
+  transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease,background .25s ease;
 }
-.theme-toggle:hover { transform:translateY(-2px);border-color:var(--gold);color:var(--text); }
-.theme-toggle-divider { width:1px;height:12px;background:var(--border); }
-:root[data-theme="light"] .theme-sun { color:var(--gold); }
-:root[data-theme="dark"] .theme-moon { color:var(--gold); }
+.theme-toggle:hover { transform:translateY(-2px);border-color:var(--gold);box-shadow:0 12px 32px color-mix(in srgb,var(--gold) 12%,transparent); }
+.theme-toggle-dot { width:7px;height:7px;border-radius:999px;background:var(--gold);box-shadow:0 0 0 4px var(--gold-soft); }
+.theme-toggle-arrow { color:var(--faint);font-size:11px;letter-spacing:0; }
 
 .scroll-progress {
   position:fixed;left:0;right:0;top:0;height:2px;z-index:10000;pointer-events:none;
