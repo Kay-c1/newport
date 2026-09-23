@@ -6,8 +6,7 @@ import CountUp from "./CountUp"
 
 export default function Hero() {
   return (
-    <section
-      style={{
+    <section id="hero" className="relative overflow-hidden" style={{
         minHeight: "100vh",
         display: "flex",
         flexDirection: "column",
@@ -15,7 +14,10 @@ export default function Hero() {
         paddingTop: "72px",
       }}
     >
+      <div className="hero-orb" aria-hidden="true" />
+      <div className="relative z-10">
       <div
+        className="hero-meta"
         style={{
           maxWidth: "1200px",
           margin: "0 auto",
@@ -87,7 +89,7 @@ export default function Hero() {
               fontWeight: 900,
               lineHeight: 0.9,
               letterSpacing: "-3px",
-              color: "white",
+              color: "var(--text)",
               textTransform: "uppercase",
               fontFamily: "inherit",
             }}
@@ -108,7 +110,7 @@ export default function Hero() {
               lineHeight: 0.9,
               letterSpacing: "-3px",
               color: "transparent",
-              WebkitTextStroke: "1px #52525b",
+              WebkitTextStroke: "1px var(--muted)",
               textTransform: "uppercase",
               fontFamily: "inherit",
             }}
@@ -135,7 +137,7 @@ export default function Hero() {
             <span
               key={tag.text}
               style={{
-                border: "1px solid #27272a",
+                border: "1px solid var(--border)",
                 padding: "6px 14px",
                 borderRadius: "999px",
                 animation: "fadeIn 0.5s ease forwards",
@@ -171,7 +173,7 @@ export default function Hero() {
             direction="bottom"
             stepDuration={0.3}
             style={{
-              color: "#71717a",
+              color: "var(--muted)",
               fontSize: "15px",
               maxWidth: "480px",
               lineHeight: 1.8,
@@ -195,8 +197,8 @@ export default function Hero() {
               display: "inline-flex",
               alignItems: "center",
               gap: "8px",
-              backgroundColor: "white",
-              color: "black",
+              backgroundColor: "var(--maroon)",
+              color: "#fff",
               padding: "12px 24px",
               borderRadius: "999px",
               fontSize: "14px",
@@ -205,10 +207,10 @@ export default function Hero() {
               transition: "background 0.2s",
             }}
             onMouseEnter={(e) =>
-              (e.currentTarget.style.backgroundColor = "#e4e4e7")
+              (e.currentTarget.style.backgroundColor = "var(--gold)")
             }
             onMouseLeave={(e) =>
-              (e.currentTarget.style.backgroundColor = "white")
+              (e.currentTarget.style.backgroundColor = "var(--maroon)")
             }
           >
             View Work →
@@ -232,6 +234,7 @@ export default function Hero() {
             />
           </a>
         </div>
+      </div>
       </div>
 
       {/* Stats Bar */}
